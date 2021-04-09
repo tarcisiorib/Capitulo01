@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Capitulo01.Models.Instituicao>
+﻿@model IEnumerable<Capitulo01.Models.Departamento>
 
 @{
     Layout = null;
@@ -13,16 +13,13 @@
 </head>
 <body>
 <p>
-    <a asp-action="Create">Criar nova instituição</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
                 @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Endereco)
             </th>
             <th></th>
         </tr>
@@ -34,12 +31,9 @@
                 @Html.DisplayFor(modelItem => item.Nome)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Endereco)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.InstituicaoID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.InstituicaoID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.InstituicaoID })
+                <a asp-action="Edit" asp-route-id="@item.DepartamentoID">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.DepartamentoID">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.DepartamentoID">Delete</a>
             </td>
         </tr>
 }
