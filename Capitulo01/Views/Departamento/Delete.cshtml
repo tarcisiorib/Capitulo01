@@ -1,36 +1,55 @@
 ﻿@model Capitulo01.Models.Departamento
 
 @{
-    Layout = null;
+    Layout = "/views/shared/_IESLayout.cshtml";
 }
 
-<!DOCTYPE html>
+@section styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    </environment>
+}
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Delete</title>
-</head>
-<body>
+<div class="card">
+    <div class="card-header text-white bg-primary text-center h1">Departamento</div>
+    <div class="card-body">
+        <div class="form-group">
+            <label asp-for="DepartamentoID" class="control-label"></label>
+            <br />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input asp-for="DepartamentoID" class="form-control" disabled="disabled" />
+            </div>
+            <label asp-for="Nome" class="control-label"></label>
+            <br />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input asp-for="Nome" class="form-control" disabled="disabled" />
+            </div>
+            
+        </div>
+        <form asp-action="Delete" class="text-center">
+            <input type="hidden" asp-for="DepartamentoID" />
+            <input type="submit" value="Excluir" class="btn btn-danger" />
+            <a asp-action="Index" class="btn btn-primary">Cancelar</a>
+        </form>
+    </div>
+    <div class="card-footer bg-secondary text-center text-white">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Departamento</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nome)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nome)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="DepartamentoID" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+    </div>
 </div>
-</body>
-</html>
+
+@section ScriptPage {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

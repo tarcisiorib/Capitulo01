@@ -128,6 +128,7 @@ namespace Capitulo01.Controllers
             var instituicao = await _context.Instituicoes.SingleOrDefaultAsync(i => i.InstituicaoID == id);
             _context.Instituicoes.Remove(instituicao);
             await _context.SaveChangesAsync();
+            TempData["msg"] = $"Instituição {instituicao.Nome.ToUpper()} foi excluída!";
             return RedirectToAction(nameof(Index));
         }
     }

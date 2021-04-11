@@ -1,49 +1,84 @@
 ﻿@model IEnumerable<Capitulo01.Models.Instituicao>
 
 @{
-    Layout = null;
+    Layout = "/views/shared/_IESLayout.cshtml";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Index</title>
-</head>
-<body>
-<p>
-    <a asp-action="Create">Criar nova instituição</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nome)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Endereco)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nome)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Endereco)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.InstituicaoID }) |
-                @Html.ActionLink("Details", "Details", new { id = item.InstituicaoID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.InstituicaoID })
-            </td>
-        </tr>
+@section styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.min.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap.min.css" />
+    </environment>
 }
-    </tbody>
-</table>
-</body>
-</html>
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["msg"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-header text-white bg-primary text-center h1">Instituições</div>
+    <div class="card-body">
+        <table id="instituicoes" class="table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.InstituicaoID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Endereco)
+                    </th>
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.InstituicaoID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Endereco)
+                        </td>
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@item.InstituicaoID" class="btn btn-warning btn-sm">Alterar</a>
+                            <a asp-action="Details" asp-route-id="@item.InstituicaoID" class="btn btn-info btn-sm">Detalhes</a>
+                            <a asp-action="Delete" asp-route-id="@item.InstituicaoID" class="btn btn-danger btn-sm">Excluir</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-action="Create" class="btn btn-success">Nova Instituição</a>
+    </div>
+    <div class="card-footer bg-secondary text-center">
+        
+    </div>
+</div>
+
+@section ScriptPage {
+    <environment include="Development">
+        <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#instituicoes').DataTable();
+        })
+    </script>
+}
