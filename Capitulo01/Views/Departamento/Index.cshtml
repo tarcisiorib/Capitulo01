@@ -32,7 +32,9 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Nome)
                     </th>
-                    
+                    <th>
+                        @Html.DisplayNameFor(model => model.Instituicao.Nome)
+                    </th>
                     <th class="text-center">Ações</th>
                 </tr>
             </thead>
@@ -46,7 +48,9 @@
                         <td>
                             @Html.DisplayFor(modelItem => item.Nome)
                         </td>
-                        
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Instituicao.Nome)
+                        </td>
                         <td class="text-center">
                             <a asp-action="Edit" asp-route-id="@item.DepartamentoID" class="btn btn-warning btn-sm">Alterar</a>
                             <a asp-action="Details" asp-route-id="@item.DepartamentoID" class="btn btn-info btn-sm">Detalhes</a>
