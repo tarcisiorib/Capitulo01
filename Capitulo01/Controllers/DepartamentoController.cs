@@ -7,27 +7,31 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Modelo.Cadastros;
+using Capitulo01.Data.DAL.Cadastros;
 
 namespace Capitulo01.Controllers
 {
     public class DepartamentoController : Controller
     {
-        private readonly IESContext _context;
+        private DepartamentoDAO departamentoDAO;
+        private InstituicaoDAO InstituicaoDAO;
 
         public DepartamentoController(IESContext context)
         {
-            _context = context;
+            departamentoDAO = new DepartamentoDAO(context);
+            InstituicaoDAO = new InstituicaoDAO(context);
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Departamentos.Include(i => i.Instituicao).OrderBy(d => d.DepartamentoID).ToListAsync());
+            return View(await departamentoDAO.GetAll().ToListAsync());
         }
 
         public IActionResult Create()
         {
-            var instituicoes = _context.Instituicoes.OrderBy(i => i.Nome).ToList();
-            instituicoes.Insert(0, new Instituicao() { InstituicaoID = 0, Nome = "Selecione a instituição" });
+            var instituicoes = InstituicaoDAO.GetAll().ToList();
+            instituicoes.Insert(0, new Instituicao() { InstituicaoID = 0, Nome = "Selecione uma instituição" });
             ViewBag.Instituicoes = instituicoes;
             return View();
         }
@@ -40,8 +44,7 @@ namespace Capitulo01.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    _context.Add(departamento);
-                    await _context.SaveChangesAsync();
+                    await departamentoDAO.Upsert(departamento);
                     return RedirectToAction(nameof(Index));
                 }
             }
@@ -55,17 +58,10 @@ namespace Capitulo01.Controllers
 
         public async Task<IActionResult> Edit(long? id)
         {
-            if (id == null)
-                return BadRequest();
-
-            var departamento = await _context.Departamentos.SingleOrDefaultAsync(d => d.DepartamentoID == id);
-
-            if (departamento == null)
-                return NotFound();
-
-            ViewBag.Instituicoes = new SelectList(_context.Instituicoes.OrderBy(i => i.Nome), "InstituicaoID", "Nome", departamento.InstituicaoID);
-
-            return View(departamento);
+            ViewResult visaoDepartamento = (ViewResult)await GetViewById(id);
+            var departamento = (Departamento)visaoDepartamento.Model;
+            ViewBag.Instituicoes = new SelectList(InstituicaoDAO.GetAll(), "InstituicaoID", "Nome", departamento.InstituicaoID);
+            return visaoDepartamento;
         }
 
         [HttpPost]
@@ -79,12 +75,11 @@ namespace Capitulo01.Controllers
             {
                 try
                 {
-                    _context.Update(departamento);
-                    await _context.SaveChangesAsync();
+                    await departamentoDAO.Upsert(departamento);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DepartamentoExists(departamento.DepartamentoID))
+                    if (!await DepartamentoExists(departamento.DepartamentoID))
                         return NotFound();
                     else
                         throw;
@@ -93,52 +88,45 @@ namespace Capitulo01.Controllers
                 return RedirectToAction(nameof(Index));
             }
 
-            ViewBag.Instituicoes = new SelectList(_context.Instituicoes.OrderBy(i => i.Nome), "InstituicaoID", "Nome", departamento.InstituicaoID);
+            ViewBag.Instituicoes = new SelectList(InstituicaoDAO.GetAll(), "InstituicaoID", "Nome", departamento.InstituicaoID);
             return View(departamento);
         }
 
-        private bool DepartamentoExists(long? id)
+        private async Task<bool> DepartamentoExists(long? id)
         {
-            return _context.Departamentos.Any(d => d.DepartamentoID == id);
+            return await departamentoDAO.GetById((long)id) != null;
         }
 
         public async Task<IActionResult> Details(long? id)
         {
-            if (id == null)
-                return BadRequest();
-
-            var departamento = await _context.Departamentos.SingleOrDefaultAsync(d => d.DepartamentoID == id);
-            _context.Instituicoes.Where(i => departamento.InstituicaoID == i.InstituicaoID).Load();
-
-            if (departamento == null)
-                return NotFound();
-
-            return View(departamento);
+            return await GetViewById(id);
         }
 
         public async Task<IActionResult> Delete(long? id)
         {
-            if (id == null)
-                return BadRequest();
-
-            var departamento = await _context.Departamentos.SingleOrDefaultAsync(d => d.DepartamentoID == id);
-            _context.Instituicoes.Where(i => departamento.InstituicaoID == i.InstituicaoID).Load();
-
-            if (departamento == null)
-                return NotFound();
-
-            return View(departamento);
+            return await GetViewById(id);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(long? id)
         {
-            var departamento = await _context.Departamentos.SingleOrDefaultAsync(d => d.DepartamentoID == id);
-            _context.Departamentos.Remove(departamento);
-            await _context.SaveChangesAsync();
+            var departamento = await departamentoDAO.Delete((long)id);
             TempData["msg"] = $"Departamento {departamento.Nome.ToUpper()} foi excluído";
             return RedirectToAction(nameof(Index));
+        }
+
+        private async Task<IActionResult> GetViewById(long? id)
+        {
+            if (id == null)
+                return BadRequest();
+
+            var departamento = await departamentoDAO.GetById((long)id);
+
+            if (departamento == null)
+                return NotFound();
+
+            return View(departamento);
         }
     }
 }
