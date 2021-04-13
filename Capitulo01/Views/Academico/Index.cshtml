@@ -1,0 +1,90 @@
+﻿@model IEnumerable<Modelo.Discente.Academico>
+
+@{
+    Layout = "~/Views/Shared/_IESLayout.cshtml";
+}
+
+@section styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.min.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap.min.css" />
+    </environment>
+}
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["msg"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-header text-white bg-primary text-center h1">Acadêmicos</div>
+    <div class="card-body">
+        <table id="academicos" class="table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.AcademicoID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.RegistroAcademico)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nascimento)
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AcademicoID)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RegistroAcademico)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nome)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nascimento)
+                    </td>                    
+                    <td class="text-center">
+                        <a asp-action="Edit" asp-route-id="@item.AcademicoID" class="btn btn-warning btn-sm">Alterar</a>
+                        <a asp-action="Details" asp-route-id="@item.AcademicoID" class="btn btn-info btn-sm">Detalhes</a>
+                        <a asp-action="Delete" asp-route-id="@item.AcademicoID" class="btn btn-danger btn-sm">Excluir</a>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-action="Create" class="btn btn-success">Novo Acadêmico</a>
+    </div>
+    <div class="card-footer bg-secondary text-center">
+
+    </div>
+</div>
+
+@section ScriptPage {
+    <environment include="Development">
+        <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#academicos').DataTable();
+        })
+    </script>
+}
