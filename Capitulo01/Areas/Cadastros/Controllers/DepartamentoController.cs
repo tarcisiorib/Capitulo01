@@ -1,17 +1,15 @@
 ﻿using Capitulo01.Data;
-using Capitulo01.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Modelo.Cadastros;
 using Capitulo01.Data.DAL.Cadastros;
 
-namespace Capitulo01.Controllers
+namespace Capitulo01.Areas.Cadastros.Controllers
 {
+    [Area("Cadastros")]
     public class DepartamentoController : Controller
     {
         private DepartamentoDAO departamentoDAO;

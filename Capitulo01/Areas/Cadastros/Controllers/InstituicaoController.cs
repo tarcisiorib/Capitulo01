@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 using Modelo.Cadastros;
 using Capitulo01.Data.DAL.Cadastros;
 
-namespace Capitulo01.Controllers
+namespace Capitulo01.Areas.Cadastros.Controllers
 {
+    [Area("Cadastros")]
     public class InstituicaoController : Controller
     {        
         private readonly InstituicaoDAO instituicaoDAO;
