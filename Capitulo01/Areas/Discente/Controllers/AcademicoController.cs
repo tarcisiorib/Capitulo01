@@ -1,9 +1,13 @@
 ﻿using Capitulo01.Data;
 using Capitulo01.Data.DAL.Discente;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using Modelo.Discente;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace Capitulo01.Areas.Discente.Controllers
@@ -13,10 +17,13 @@ namespace Capitulo01.Areas.Discente.Controllers
     public class AcademicoController : Controller
     {
         private readonly AcademicoDAO academicoDAO;
+        private readonly IWebHostEnvironment env;
 
-        public AcademicoController(IESContext context)
+        public AcademicoController(IESContext context,
+            IWebHostEnvironment env)
         {
             academicoDAO = new AcademicoDAO(context);
+            this.env = env;
         }
 
         public async Task<IActionResult> Index()
@@ -79,7 +86,7 @@ namespace Capitulo01.Areas.Discente.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(long? id, [Bind("AcademicoID,Nome,RegistroAcademico,Nascimento")]Academico academico)
+        public async Task<IActionResult> Edit(long? id, [Bind("AcademicoID,Nome,RegistroAcademico,Nascimento")]Academico academico, IFormFile foto, string removerFoto)
         {
             if (id != academico.AcademicoID)
                 return BadRequest();
@@ -88,6 +95,19 @@ namespace Capitulo01.Areas.Discente.Controllers
             {
                 try
                 {
+                    var stream = new MemoryStream();
+                    if (removerFoto != null)
+                        academico.Foto = null;
+                    else
+                    {
+                        if (foto != null)
+                        {
+                            await foto.CopyToAsync(stream);
+                            academico.Foto = stream.ToArray();
+                            academico.MimeType = foto.ContentType;
+                        }                        
+                    }
+
                     await academicoDAO.Upsert(academico);
                 }
                 catch (DbUpdateConcurrencyException)
@@ -116,6 +136,30 @@ namespace Capitulo01.Areas.Discente.Controllers
         private async Task<bool> AcademicoExists(long? id)
         {
             return await academicoDAO.GetById((long)id) != null;
+        }
+
+        public async Task<FileContentResult> GetFoto(long id)
+        {
+            var academico = await academicoDAO.GetById(id);
+            if (academico != null)
+                return File(academico.Foto, academico.MimeType);
+
+            return null;
+        }
+
+        public async Task<FileResult> Download(long id)
+        {
+            var academico = await academicoDAO.GetById(id);
+            string arquivo = $"Foto {academico.AcademicoID.ToString().Trim()}.jpg";
+
+            var fs = new FileStream(Path.Combine(env.WebRootPath, arquivo), FileMode.Create, FileAccess.Write);
+            fs.Write(academico.Foto, 0, academico.Foto.Length);
+            fs.Close();
+
+            var provider = new PhysicalFileProvider(env.WebRootPath);
+            var fi = provider.GetFileInfo(arquivo);
+            var rs = fi.CreateReadStream();
+            return File(rs, academico.MimeType, arquivo);
         }
     }
 }

@@ -1,0 +1,78 @@
+﻿@model Modelo.Discente.Academico
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_IESLayout.cshtml";
+}
+
+@section styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    </environment>
+}
+
+<div class="card">
+    <div class="card-header text-white bg-primary text-center h1">Acadêmico</div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-9">
+                <div class="form-group">
+                    <label asp-for="AcademicoID" class="control-label"></label>
+                    <br />
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-key" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <input asp-for="AcademicoID" class="form-control" disabled="disabled" />
+                    </div>
+                    <label asp-for="RegistroAcademico" class="control-label"></label>
+                    <br />
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-address-card" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <input asp-for="RegistroAcademico" class="form-control" disabled="disabled" />
+                    </div>
+                    <label asp-for="Nome" class="control-label"></label>
+                    <br />
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <input asp-for="Nome" class="form-control" disabled="disabled" />
+                    </div>
+                    <label asp-for="Nascimento" class="control-label"></label>
+                    <br />
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fa fa-address-card" aria-hidden="true"></i>
+                            </span>
+                        </div>
+                        <input asp-for="Nascimento" class="form-control" disabled="disabled" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                <img class="img-thumbnail" src="@Url.Action("GetFoto", "Academico", new { id = Model.AcademicoID })" style="display:block; margin-left:auto; margin-right:auto;"/>
+                @Html.ActionLink("Download", "Download", "Academico", new { id = Model.AcademicoID }, null)
+            </div>
+        </div>
+        <div class="form-group text-center">
+            <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.AcademicoID">Alterar</a>
+            <a asp-action="Index" class="btn btn-primary">Voltar</a>
+        </div>
+    </div>
+    <div class="card-footer bg-secondary text-center text-white">
+
+    </div>
+</div>

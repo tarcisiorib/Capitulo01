@@ -1,0 +1,56 @@
+﻿@model Modelo.Discente.Academico
+
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_IESLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header text-white bg-secondary text-center h2">Alterar acadêmico</div>
+    <div class="card-body">
+        <form enctype="multipart/form-data" asp-action="Edit">
+            <div class="row">
+                <div class="col-9">
+                    <input type="hidden" asp-for="AcademicoID" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="RegistroAcademico" class="control-label"></label>
+                        <input asp-for="RegistroAcademico" class="form-control" />
+                        <span asp-validation-for="RegistroAcademico" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Nome" class="control-label"></label>
+                        <input asp-for="Nome" class="form-control" />
+                        <span asp-validation-for="Nome" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Nascimento" class="control-label"></label>
+                        <input asp-for="Nascimento" class="form-control" />
+                        <span asp-validation-for="Nascimento" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Foto</label>
+                        <input type="file" name="foto" class="form-control" />
+                    </div>
+                </div>
+                <div class="col-3">
+                    <img class="img-thumbnail" src="@Url.Action("GetFoto", "Academico", new { id = Model.AcademicoID })" style="display:block; margin-left:auto; margin-right:auto;" />
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="removerFoto" value="" />
+                            Remover foto
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group text-center h3">
+                <input type="submit" value="Salvar" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section ScriptPage {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
