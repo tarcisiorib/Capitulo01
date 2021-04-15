@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@inject Microsoft.AspNetCore.Identity.SignInManager<Capitulo01.Models.Infra.Usuario> SignInManager
+@inject Microsoft.AspNetCore.Identity.UserManager<Capitulo01.Models.Infra.Usuario> UserManager
+
+<!DOCTYPE html>
 
 <html>
 <head>
@@ -25,7 +28,7 @@
     @RenderSection("styles", false)
 </head>
 <body>
-    <nav class="navbar navbar-light bg-primary fixed-top">
+    <nav class="navbar navbar-light bg-primary navbar-fixed-top">
         <div class="container-fluid">
             <div class="row">
                 <div class="navbar">
@@ -39,8 +42,22 @@
             </div>
         </div>
     </nav>
-
-    <div class="container-fluid" style="margin-top:120px;">
+    <div class="row" style="text-align:right">
+        <div class="col-6"></div>
+        <div class="col-6">
+            @if (SignInManager.IsSignedIn(User))
+            {
+                <div>Olá @UserManager.GetUserName(User), seja bem-vindo(a) / @Html.ActionLink("Logout", "Sair", "Infra", new { area = "" })</div>
+            }
+            else
+            {
+                <a class="nav-item nav-link" asp-area="" asp-controller="Infra" asp-action="Acessar">
+                    Informar usuário/senha para acessar
+                </a>
+            }
+        </div>
+    </div>
+    <div class="container-fluid" style="margin-top:20px;">
         <div class="row">
             <div class="col-3">
                 <nav class="nav flex-column bg-transparent" style="margin-left:40px">

@@ -35,6 +35,26 @@ namespace Capitulo01.Controllers
             return View();
         }
 
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Acessar(AcessarViewModel model, string returnUrl = null)
+        {
+            ViewData["ReturnUrl"] = returnUrl;
+            if (ModelState.IsValid)
+            {
+                var result = await signInManager.PasswordSignInAsync(model.Email, model.Senha, model.LembrarDeMim, lockoutOnFailure: false);
+
+                if (result.Succeeded)
+                {
+                    logger.LogInformation("Usuário logado.");
+                    return RedirectToLocal(returnUrl);
+                }
+            }
+            ModelState.AddModelError(string.Empty, "Falha na tentativa de login.");
+            return View(model);
+        }
+
         [AllowAnonymous]
         public IActionResult NovoUsuario(string returnUrl = null)
         {
@@ -79,6 +99,13 @@ namespace Capitulo01.Controllers
                 return Redirect(returnUrl);
             else
                 return RedirectToAction(nameof(HomeController.Index), "Home");
+        }
+
+        public async Task<IActionResult> Sair()
+        {
+            await signInManager.SignOutAsync();
+            logger.LogInformation("Usuário desconectou-se");
+            return RedirectToAction(nameof(HomeController.Index), "Home");
         }
     }
 }
