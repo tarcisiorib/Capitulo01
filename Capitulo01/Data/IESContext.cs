@@ -1,15 +1,12 @@
-﻿using Capitulo01.Models;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Microsoft.EntityFrameworkCore;
 using Modelo.Cadastros;
 using Modelo.Discente;
+using Capitulo01.Models.Infra;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Capitulo01.Data
 {
-    public class IESContext : DbContext
+    public class IESContext : IdentityDbContext<Usuario>
     {
         public IESContext(DbContextOptions<IESContext> options) : base(options)
         {
