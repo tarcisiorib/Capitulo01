@@ -9,7 +9,7 @@ namespace Capitulo01.Data.DAL.Cadastros
 {
     public class InstituicaoDAO
     {
-        private IESContext _context;
+        private readonly IESContext _context;
 
         public InstituicaoDAO(IESContext context)
         {

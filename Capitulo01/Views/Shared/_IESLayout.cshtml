@@ -74,6 +74,24 @@
                         </a>
                     </div>
                     <div class="row">
+                        <a class="nav-link" asp-area="Cadastros" asp-controller="Curso" asp-action="Index">
+                            <img src="~/images/course.png" width="30" height="30" />
+                            Cursos
+                        </a>
+                    </div>
+                    <div class="row">
+                        <a class="nav-link" asp-area="Cadastros" asp-controller="Disciplina" asp-action="Index">
+                            <img src="~/images/subject.png" width="30" height="30" />
+                            Disciplinas
+                        </a>
+                    </div>
+                    <div class="row">
+                        <a class="nav-link" asp-area="Docente" asp-controller="Professor" asp-action="Index">
+                            <img src="~/images/professor.png" width="30" height="30" />
+                            Professores
+                        </a>
+                    </div>
+                    <div class="row">
                         <a class="nav-link" asp-area="Discente" asp-controller="Academico" asp-action="Index">
                             <img src="~/images/academic.png" width="30" height="30" />
                             Acadêmicos
@@ -91,13 +109,13 @@
     </nav>
 
     <environment include="Development">
-        <script src="~/lib/jquery/jquery.slim.min.js"></script>
+        <script src="~/lib/jquery/jquery.min.js"></script>
         <script src="~/lib/popper.js/umd/popper.js"></script>
         <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
     </environment>
     <environment exclude="Development">
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.9.2/umd/popper.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.6.0/js/bootstrap.min.js"></script>
     </environment>
 

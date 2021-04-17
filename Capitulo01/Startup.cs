@@ -36,6 +36,9 @@ namespace Capitulo01
                 options.LoginPath = "/Infra/Acessar";
                 options.AccessDeniedPath = "/Infra/AcessoNegado";
             });
+
+            services.AddSession();
+            services.AddDistributedMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,6 +62,8 @@ namespace Capitulo01
             app.UseStaticFiles();
 
             app.UseRouting();
+
+            app.UseSession();
 
             app.UseAuthentication();
 

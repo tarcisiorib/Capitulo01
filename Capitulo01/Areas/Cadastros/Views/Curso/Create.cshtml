@@ -1,0 +1,33 @@
+﻿@model Modelo.Cadastros.Curso
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_IESLayout.cshtml";
+}
+
+<div class="card">
+    <div class="card-header text-white bg-primary text-center">Novo Curso</div>
+    <div class="card-body">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Nome" class="control-label"></label>
+                <input asp-for="Nome" class="form-control" />
+                <span asp-validation-for="Nome" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DepartamentoID" class="control-label"></label>
+                <select asp-for="DepartamentoID" class="form-control" asp-items="@(new SelectList(ViewBag.Departamentos, "DepartamentoID", "Nome"))"></select>
+            </div>
+            <div class="form-group text-center h3">
+                <input type="submit" value="Registrar" class="btn btn-success" />
+                <a asp-action="Index" class="btn btn-primary">Cancelar</a>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer bg-secondary"></div>
+</div>
+
+@section ScriptPage {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

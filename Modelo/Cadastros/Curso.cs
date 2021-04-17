@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Modelo.Docente;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Modelo.Cadastros
 {
@@ -11,5 +10,6 @@ namespace Modelo.Cadastros
         public long? DepartamentoID { get; set; }
         public Departamento Departamento { get; set; }
         public virtual ICollection<CursoDisciplina> CursosDisciplinas { get; set; }
+        public virtual ICollection<CursoProfessor> CursosProfessores { get; set; }
     }
 }

@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Modelo.Docente.Professor>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_IESLayout.cshtml";
+}
+
+@section styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/datatables/css/jquery.dataTables.min.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/css/dataTables.bootstrap.min.css" />
+    </environment>
+}
+
+@if (TempData["msg"] != null)
+{
+    <div class="alert alert-success" role="alert">
+        @TempData["msg"]
+    </div>
+}
+
+<div class="card">
+    <div class="card-header text-white bg-primary text-center h1">TEACHERS</div>
+    <div class="card-body">
+        <table id="disciplinas" class="table-bordered table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.ProfessorID)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Nome)
+                    </th>
+
+                    <th class="text-center">Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProfessorID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Nome)
+                        </td>
+
+                        <td class="text-center">
+                            <a asp-action="Edit" asp-route-id="@item.ProfessorID" class="btn btn-warning btn-sm">EDIT</a>
+                            <a asp-action="Details" asp-route-id="@item.ProfessorID" class="btn btn-info btn-sm">DETAILS</a>
+                            <a asp-action="Delete" asp-route-id="@item.ProfessorID" class="btn btn-danger btn-sm">DELETE</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <a asp-action="Create" class="btn btn-success">ADD</a>
+        <a asp-action="AdicionarProfessor" class="btn btn-primary">CLASSES</a>
+    </div>
+    <div class="card-footer bg-secondary text-center">
+
+    </div>
+</div>
+
+@section ScriptPage {
+    <environment include="Development">
+        <script src="~/lib/datatables/js/jquery.dataTables.js"></script>
+
+    </environment>
+    <environment exclude="Development">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.21/js/jquery.dataTables.min.js"></script>
+    </environment>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#disciplinas').DataTable();
+        })
+    </script>
+}

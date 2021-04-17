@@ -1,0 +1,51 @@
+﻿@model Modelo.Docente.Professor
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_IESLayout.cshtml";
+}
+
+@section styles {
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/font-awesome/css/all.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    </environment>
+}
+
+<div class="card">
+    <div class="card-header text-white bg-primary text-center h1">PROFESSOR</div>
+    <div class="card-body">
+        <div class="form-group">
+            <label asp-for="ProfessorID" class="control-label"></label>
+            <br />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fa fa-key" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input asp-for="ProfessorID" class="form-control" disabled="disabled" />
+            </div>
+            <label asp-for="Nome" class="control-label"></label>
+            <br />
+            <div class="input-group">
+                <div class="input-group-prepend">
+                    <span class="input-group-text">
+                        <i class="fa fa-user-circle" aria-hidden="true"></i>
+                    </span>
+                </div>
+                <input asp-for="Nome" class="form-control" disabled="disabled" />
+            </div>
+
+        </div>
+        <div class="form-group text-center">
+            <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model.ProfessorID">EDIT</a>
+            <a asp-action="Index" class="btn btn-danger">BACK</a>
+        </div>
+    </div>
+    <div class="card-footer bg-secondary text-center text-white">
+
+    </div>
+</div>
